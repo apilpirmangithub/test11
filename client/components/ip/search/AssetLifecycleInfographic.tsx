@@ -7,6 +7,7 @@ interface AssetLifecycleInfographicProps {
   asset: SearchResult;
   isOpen: boolean;
   onClose: () => void;
+  isMobile?: boolean;
 }
 
 interface AssetNode {
