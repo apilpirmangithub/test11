@@ -21,6 +21,7 @@ export const AssetLifecycleInfographic = ({
   asset,
   isOpen,
   onClose,
+  isMobile = false,
 }: AssetLifecycleInfographicProps) => {
   const [assetGraph, setAssetGraph] = useState<{
     parents: AssetNode[];
