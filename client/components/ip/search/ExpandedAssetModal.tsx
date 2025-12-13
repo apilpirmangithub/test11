@@ -103,10 +103,23 @@ export const ExpandedAssetModal = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between gap-4 bg-gradient-to-r from-slate-950/60 to-slate-900/40 backdrop-blur-xl border-b border-slate-800/40 px-6 py-5 flex-shrink-0">
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex items-center gap-3">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-50 line-clamp-2 tracking-tight">
               {asset.title || asset.name || "Untitled Asset"}
             </h2>
+            {hideMetadataBadges && (
+              <span className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border">
+                {asset.isDerivative ? (
+                  <span className="bg-blue-500/25 text-blue-200 border-blue-500/40">
+                    Derivative
+                  </span>
+                ) : (
+                  <span className="bg-emerald-500/25 text-emerald-200 border-emerald-500/40">
+                    Original
+                  </span>
+                )}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
