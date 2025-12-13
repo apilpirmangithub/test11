@@ -196,7 +196,7 @@ export const AssetLifecycleInfographic = ({
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-12">
+                <div className="flex flex-col items-center gap-6 sm:gap-12">
                   {/* Parents Section */}
                   {hasParents && (
                     <motion.div
