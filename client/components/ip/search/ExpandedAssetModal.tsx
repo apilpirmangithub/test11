@@ -47,6 +47,7 @@ interface ExpandedAssetModalProps {
   onRemix?: () => void;
   onRemixMenu?: () => void;
   onRemixSelected?: (remixType: "paid" | "free") => Promise<void>;
+  hideMetadataBadges?: boolean;
 }
 
 export const ExpandedAssetModal = ({
@@ -55,6 +56,7 @@ export const ExpandedAssetModal = ({
   onShowDetails,
   onRemixMenu,
   onRemixSelected,
+  hideMetadataBadges = false,
 }: ExpandedAssetModalProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLifecycle, setShowLifecycle] = useState(false);
@@ -101,10 +103,23 @@ export const ExpandedAssetModal = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between gap-4 bg-gradient-to-r from-slate-950/60 to-slate-900/40 backdrop-blur-xl border-b border-slate-800/40 px-6 py-5 flex-shrink-0">
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex items-center gap-3">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-50 line-clamp-2 tracking-tight">
               {asset.title || asset.name || "Untitled Asset"}
             </h2>
+            {hideMetadataBadges && (
+              <span className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border">
+                {asset.isDerivative ? (
+                  <span className="bg-blue-500/25 text-blue-200 border-blue-500/40">
+                    Derivative
+                  </span>
+                ) : (
+                  <span className="bg-emerald-500/25 text-emerald-200 border-emerald-500/40">
+                    Original
+                  </span>
+                )}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
@@ -275,58 +290,60 @@ export const ExpandedAssetModal = ({
           )}
 
           {/* Metadata Badges */}
-          <div className="flex flex-wrap gap-2.5">
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className={`text-xs px-4 py-2.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border transition-all ${
-                asset.isDerivative
-                  ? "bg-blue-500/25 text-blue-200 border-blue-500/40 hover:bg-blue-500/35"
-                  : "bg-emerald-500/25 text-emerald-200 border-emerald-500/40 hover:bg-emerald-500/35"
-              }`}
-            >
-              {asset.isDerivative ? "🔄 Remix" : "✨ Original"}
-            </motion.span>
-
-            {asset.score !== undefined && (
+          {!hideMetadataBadges && (
+            <div className="flex flex-wrap gap-2.5">
               <motion.span
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-[#FF4DA6]/25 text-[#FF4DA6] border border-[#FF4DA6]/40 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-[#FF4DA6]/35 transition-all"
+                transition={{ delay: 0.1 }}
+                className={`text-xs px-4 py-2.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border transition-all ${
+                  asset.isDerivative
+                    ? "bg-blue-500/25 text-blue-200 border-blue-500/40 hover:bg-blue-500/35"
+                    : "bg-emerald-500/25 text-emerald-200 border-emerald-500/40 hover:bg-emerald-500/35"
+                }`}
               >
-                {(asset.score * 100).toFixed(0)}% Match
+                {asset.isDerivative ? "🔄 Remix" : "✨ Original"}
               </motion.span>
-            )}
 
-            {asset.mediaType && (
-              <motion.span
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
-              >
-                {asset.mediaType
-                  ?.replace("video/", "")
-                  .replace("audio/", "")
-                  .replace("image/", "")
-                  .toUpperCase() || "Media"}
-              </motion.span>
-            )}
+              {asset.score !== undefined && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-[#FF4DA6]/25 text-[#FF4DA6] border border-[#FF4DA6]/40 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-[#FF4DA6]/35 transition-all"
+                >
+                  {(asset.score * 100).toFixed(0)}% Match
+                </motion.span>
+              )}
 
-            {asset.ownerAddress && (
-              <motion.span
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-mono whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
-              >
-                {asset.ownerAddress.slice(0, 8)}...
-                {asset.ownerAddress.slice(-6)}
-              </motion.span>
-            )}
-          </div>
+              {asset.mediaType && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
+                >
+                  {asset.mediaType
+                    ?.replace("video/", "")
+                    .replace("audio/", "")
+                    .replace("image/", "")
+                    .toUpperCase() || "Media"}
+                </motion.span>
+              )}
+
+              {asset.ownerAddress && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-mono whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
+                >
+                  {asset.ownerAddress.slice(0, 8)}...
+                  {asset.ownerAddress.slice(-6)}
+                </motion.span>
+              )}
+            </div>
+          )}
 
           {/* Action Buttons */}
           <motion.div

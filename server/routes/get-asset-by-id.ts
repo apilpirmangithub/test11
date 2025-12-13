@@ -39,8 +39,54 @@ interface GetAssetByIdResponseBody {
   mediaType?: string;
   thumbnailUrl?: string;
   ownerAddress?: string;
+  childIpIds?: string[];
   error?: string;
   message?: string;
+}
+
+async function fetchChildIpIds(
+  parentIpId: string,
+  apiKey: string,
+): Promise<string[]> {
+  try {
+    const response = await fetch(
+      "https://api.storyapis.com/api/v4/assets/edges",
+      {
+        method: "POST",
+        headers: {
+          "X-Api-Key": apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          where: {
+            parentIpId: parentIpId,
+          },
+          pagination: {
+            limit: 100,
+            offset: 0,
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.warn(
+        `Failed to fetch child IPs for ${parentIpId}: ${response.status}`,
+      );
+      return [];
+    }
+
+    const data = await response.json();
+    if (!Array.isArray(data.data) || data.data.length === 0) {
+      return [];
+    }
+
+    const edges = data.data;
+    return edges.map((edge: any) => edge.childIpId);
+  } catch (error) {
+    console.warn(`Error fetching child IPs for ${parentIpId}:`, error);
+    return [];
+  }
 }
 
 function convertIpfsUriToHttp(uri: string): string {
@@ -183,6 +229,9 @@ export const handleGetAssetById: RequestHandler<
         thumbnailUrl = convertIpfsUriToHttp(thumbnailUrl);
       }
 
+      // Fetch child IPs (derivatives)
+      const childIpIds = await fetchChildIpIds(asset.ipId, apiKey);
+
       res.json({
         ok: true,
         ipId: asset.ipId,
@@ -191,6 +240,7 @@ export const handleGetAssetById: RequestHandler<
         mediaType: asset.mediaType || "image",
         thumbnailUrl: thumbnailUrl || "",
         ownerAddress: asset.ownerAddress,
+        childIpIds: childIpIds.length > 0 ? childIpIds : undefined,
       });
     } catch (fetchError: any) {
       clearTimeout(timeoutId);

@@ -440,6 +440,7 @@ export const ImagineSearch = ({
             isOpen={true}
             onClose={() => setExpandedAsset(null)}
             onShowDetails={() => {}}
+            hideMetadataBadges={true}
             onRemixSelected={async (remixType) => {
               console.log("📤 ImagineSearch onRemixSelected called:", {
                 remixType,

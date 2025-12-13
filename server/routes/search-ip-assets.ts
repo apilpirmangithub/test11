@@ -52,6 +52,51 @@ async function fetchParentIpDetails(
   }
 }
 
+async function fetchChildIpIds(
+  parentIpId: string,
+  apiKey: string,
+): Promise<string[]> {
+  try {
+    const response = await fetch(
+      "https://api.storyapis.com/api/v4/assets/edges",
+      {
+        method: "POST",
+        headers: {
+          "X-Api-Key": apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          where: {
+            parentIpId: parentIpId,
+          },
+          pagination: {
+            limit: 100,
+            offset: 0,
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.warn(
+        `Failed to fetch child IPs for ${parentIpId}: ${response.status}`,
+      );
+      return [];
+    }
+
+    const data = await response.json();
+    if (!Array.isArray(data.data) || data.data.length === 0) {
+      return [];
+    }
+
+    const edges = data.data;
+    return edges.map((edge: any) => edge.childIpId);
+  } catch (error) {
+    console.warn(`Error fetching child IPs for ${parentIpId}:`, error);
+    return [];
+  }
+}
+
 function convertIpfsUriToHttp(uri: string): string {
   if (!uri) return uri;
 
@@ -338,6 +383,15 @@ export const handleSearchIpAssets: RequestHandler = async (req, res) => {
                     }
                   }
 
+                  // Fetch child IP IDs (derivatives)
+                  const childIpIds = await fetchChildIpIds(result.ipId, apiKey);
+                  if (childIpIds.length > 0) {
+                    console.log(
+                      `[Search IP] Fetched ${childIpIds.length} child IPs for ${result.ipId}:`,
+                      childIpIds,
+                    );
+                  }
+
                   // Determine media type from result or metadata
                   let mediaType =
                     result?.mediaType || metadata?.mediaType || "image";
@@ -559,6 +613,8 @@ export const handleSearchIpAssets: RequestHandler = async (req, res) => {
                     // Flatten parent IP details to root level
                     parentIpIds: parentIpDetails?.parentIpIds,
                     parentIpDetails: parentIpDetails || undefined,
+                    // Child IP IDs (derivatives)
+                    childIpIds: childIpIds.length > 0 ? childIpIds : undefined,
                     licenses: metadata?.licenses || [],
                     licenseTermsIds:
                       parentIpDetails?.licenseTermsIds ||
