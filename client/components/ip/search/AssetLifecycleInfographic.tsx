@@ -258,7 +258,7 @@ export const AssetLifecycleInfographic = ({
                     transition={{ delay: isMobile ? 0 : 0.2 }}
                     className="flex flex-col items-center gap-3"
                   >
-                    <div className="relative w-48 h-48 rounded-lg overflow-hidden border-3 border-[#FF4DA6] bg-slate-800 shadow-lg shadow-[#FF4DA6]/20">
+                    <div className="relative w-32 h-32 sm:w-48 sm:h-48 rounded-lg overflow-hidden border-3 border-[#FF4DA6] bg-slate-800 shadow-lg shadow-[#FF4DA6]/20">
                       {current.mediaUrl ? (
                         <img
                           src={current.mediaUrl}
