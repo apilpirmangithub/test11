@@ -229,6 +229,9 @@ export const handleGetAssetById: RequestHandler<
         thumbnailUrl = convertIpfsUriToHttp(thumbnailUrl);
       }
 
+      // Fetch child IPs (derivatives)
+      const childIpIds = await fetchChildIpIds(asset.ipId, apiKey);
+
       res.json({
         ok: true,
         ipId: asset.ipId,
@@ -237,6 +240,7 @@ export const handleGetAssetById: RequestHandler<
         mediaType: asset.mediaType || "image",
         thumbnailUrl: thumbnailUrl || "",
         ownerAddress: asset.ownerAddress,
+        childIpIds: childIpIds.length > 0 ? childIpIds : undefined,
       });
     } catch (fetchError: any) {
       clearTimeout(timeoutId);
