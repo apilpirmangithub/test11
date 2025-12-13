@@ -205,10 +205,10 @@ export const AssetLifecycleInfographic = ({
                       transition={{ delay: isMobile ? 0 : 0.1 }}
                       className="w-full"
                     >
-                      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
+                      <h3 className="text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
                         Parent Asset{parents.length > 1 ? "s" : ""}
                       </h3>
-                      <div className="flex flex-wrap justify-center gap-6">
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
                         {parents.map((parent, idx) => (
                           <motion.div
                             key={`parent-${idx}`}
