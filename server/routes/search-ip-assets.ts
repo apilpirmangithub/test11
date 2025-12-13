@@ -383,6 +383,18 @@ export const handleSearchIpAssets: RequestHandler = async (req, res) => {
                     }
                   }
 
+                  // Fetch child IP IDs (derivatives)
+                  const childIpIds = await fetchChildIpIds(
+                    result.ipId,
+                    apiKey,
+                  );
+                  if (childIpIds.length > 0) {
+                    console.log(
+                      `[Search IP] Fetched ${childIpIds.length} child IPs for ${result.ipId}:`,
+                      childIpIds,
+                    );
+                  }
+
                   // Determine media type from result or metadata
                   let mediaType =
                     result?.mediaType || metadata?.mediaType || "image";
