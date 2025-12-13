@@ -290,58 +290,60 @@ export const ExpandedAssetModal = ({
           )}
 
           {/* Metadata Badges */}
-          <div className="flex flex-wrap gap-2.5">
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className={`text-xs px-4 py-2.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border transition-all ${
-                asset.isDerivative
-                  ? "bg-blue-500/25 text-blue-200 border-blue-500/40 hover:bg-blue-500/35"
-                  : "bg-emerald-500/25 text-emerald-200 border-emerald-500/40 hover:bg-emerald-500/35"
-              }`}
-            >
-              {asset.isDerivative ? "🔄 Remix" : "✨ Original"}
-            </motion.span>
-
-            {asset.score !== undefined && (
+          {!hideMetadataBadges && (
+            <div className="flex flex-wrap gap-2.5">
               <motion.span
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-[#FF4DA6]/25 text-[#FF4DA6] border border-[#FF4DA6]/40 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-[#FF4DA6]/35 transition-all"
+                transition={{ delay: 0.1 }}
+                className={`text-xs px-4 py-2.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border transition-all ${
+                  asset.isDerivative
+                    ? "bg-blue-500/25 text-blue-200 border-blue-500/40 hover:bg-blue-500/35"
+                    : "bg-emerald-500/25 text-emerald-200 border-emerald-500/40 hover:bg-emerald-500/35"
+                }`}
               >
-                {(asset.score * 100).toFixed(0)}% Match
+                {asset.isDerivative ? "🔄 Remix" : "✨ Original"}
               </motion.span>
-            )}
 
-            {asset.mediaType && (
-              <motion.span
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
-              >
-                {asset.mediaType
-                  ?.replace("video/", "")
-                  .replace("audio/", "")
-                  .replace("image/", "")
-                  .toUpperCase() || "Media"}
-              </motion.span>
-            )}
+              {asset.score !== undefined && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-[#FF4DA6]/25 text-[#FF4DA6] border border-[#FF4DA6]/40 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-[#FF4DA6]/35 transition-all"
+                >
+                  {(asset.score * 100).toFixed(0)}% Match
+                </motion.span>
+              )}
 
-            {asset.ownerAddress && (
-              <motion.span
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-mono whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
-              >
-                {asset.ownerAddress.slice(0, 8)}...
-                {asset.ownerAddress.slice(-6)}
-              </motion.span>
-            )}
-          </div>
+              {asset.mediaType && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
+                >
+                  {asset.mediaType
+                    ?.replace("video/", "")
+                    .replace("audio/", "")
+                    .replace("image/", "")
+                    .toUpperCase() || "Media"}
+                </motion.span>
+              )}
+
+              {asset.ownerAddress && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-mono whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
+                >
+                  {asset.ownerAddress.slice(0, 8)}...
+                  {asset.ownerAddress.slice(-6)}
+                </motion.span>
+              )}
+            </div>
+          )}
 
           {/* Action Buttons */}
           <motion.div
