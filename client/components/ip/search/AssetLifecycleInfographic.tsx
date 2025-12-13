@@ -364,8 +364,8 @@ export const AssetLifecycleInfographic = ({
 
             {/* Footer Info */}
             {assetGraph && (
-              <div className="border-t border-slate-800/30 bg-slate-950/95 backdrop-blur-xl px-6 py-4 flex-shrink-0">
-                <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="border-t border-slate-800/30 bg-slate-950/95 backdrop-blur-xl px-4 sm:px-6 py-4 flex-shrink-0">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                   <div>
                     <p className="text-xs text-slate-400 uppercase tracking-wide">
                       Parents
