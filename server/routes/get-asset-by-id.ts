@@ -39,6 +39,7 @@ interface GetAssetByIdResponseBody {
   mediaType?: string;
   thumbnailUrl?: string;
   ownerAddress?: string;
+  childIpIds?: string[];
   error?: string;
   message?: string;
 }
