@@ -1,5 +1,5 @@
 import { formatEther } from "viem";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 
 interface License {
