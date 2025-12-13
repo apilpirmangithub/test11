@@ -56,6 +56,7 @@ export const ExpandedAssetModal = ({
   onShowDetails,
   onRemixMenu,
   onRemixSelected,
+  hideMetadataBadges = false,
 }: ExpandedAssetModalProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLifecycle, setShowLifecycle] = useState(false);
