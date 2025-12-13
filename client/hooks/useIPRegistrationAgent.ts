@@ -85,6 +85,7 @@ export function useIPRegistrationAgent() {
               aiTrainingManual,
               mintingFee,
               revShare,
+              isAiGeneratedGroup(group),
             )
           : getLicenseSettingsByGroup(
               group,

@@ -527,7 +527,8 @@ export const SmartLicensingForm: React.FC<SmartLicensingFormProps> = ({
               </span>
               {isAiGeneratedGroup(group) && (
                 <p className="text-xs text-slate-400 mt-1">
-                  Disabled for AI-generated content to protect creator rights
+                  Disabled for AI-generated content — prevents AI models from
+                  being trained on AI-generated data
                 </p>
               )}
               {!isAiGeneratedGroup(group) && (
