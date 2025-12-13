@@ -60,8 +60,19 @@ export const ExpandedAssetModal = ({
 }: ExpandedAssetModalProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLifecycle, setShowLifecycle] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
   const getRemixTypes = useRemixTypes();
+
+  // Detect mobile and reduce animations
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Debug logging
   React.useEffect(() => {
