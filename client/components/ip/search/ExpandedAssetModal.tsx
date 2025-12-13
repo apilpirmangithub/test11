@@ -47,6 +47,7 @@ interface ExpandedAssetModalProps {
   onRemix?: () => void;
   onRemixMenu?: () => void;
   onRemixSelected?: (remixType: "paid" | "free") => Promise<void>;
+  hideMetadataBadges?: boolean;
 }
 
 export const ExpandedAssetModal = ({
