@@ -288,7 +288,7 @@ export const ExpandedAssetModal = ({
         </div>
 
         {/* Footer with Details and Actions */}
-        <div className="border-t border-slate-800/40 bg-gradient-to-t from-slate-950/60 to-slate-900/30 backdrop-blur-xl px-6 py-6 sm:py-8 space-y-6 flex-shrink-0">
+        <div className="border-t border-slate-800/40 bg-gradient-to-t from-slate-950/60 to-slate-900/30 backdrop-blur-xl px-4 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6 flex-shrink-0 overflow-y-auto max-h-[40vh]">
           {asset.description && (
             <motion.p
               initial={{ opacity: 0 }}
