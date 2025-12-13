@@ -367,24 +367,24 @@ export const AssetLifecycleInfographic = ({
               <div className="border-t border-slate-800/30 bg-slate-950/95 backdrop-blur-xl px-4 sm:px-6 py-4 flex-shrink-0">
                 <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Parents
                     </p>
-                    <p className="text-lg font-bold text-slate-100 mt-1">
+                    <p className="text-base sm:text-lg font-bold text-slate-100 mt-1">
                       {parents.length}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Current
                     </p>
-                    <p className="text-lg font-bold text-[#FF4DA6] mt-1">1</p>
+                    <p className="text-base sm:text-lg font-bold text-[#FF4DA6] mt-1">1</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Derivatives
                     </p>
-                    <p className="text-lg font-bold text-slate-100 mt-1">
+                    <p className="text-base sm:text-lg font-bold text-slate-100 mt-1">
                       {children.length}
                     </p>
                   </div>
