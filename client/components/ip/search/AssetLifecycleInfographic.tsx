@@ -156,21 +156,34 @@ export const AssetLifecycleInfographic = ({
           className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6"
         >
           <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: isMobile ? 0.15 : 0.2 }}
-          className="absolute inset-0 bg-slate-900/70 backdrop-blur-md"
-          onClick={onClose}
-          aria-hidden="true"
-        />
-        <motion.div
-          initial={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
-          animate={isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }}
-          exit={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
-          transition={{ duration: isMobile ? 0.2 : 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-slate-950/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/50 overflow-hidden flex flex-col"
-        >
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: isMobile ? 0.15 : 0.2 }}
+            className="absolute inset-0 bg-slate-900/70 backdrop-blur-md"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+          <motion.div
+            initial={
+              isMobile
+                ? { opacity: 0, y: 20 }
+                : { scale: 0.9, opacity: 0, y: 20 }
+            }
+            animate={
+              isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }
+            }
+            exit={
+              isMobile
+                ? { opacity: 0, y: 20 }
+                : { scale: 0.9, opacity: 0, y: 20 }
+            }
+            transition={{
+              duration: isMobile ? 0.2 : 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-slate-950/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/50 overflow-hidden flex flex-col"
+          >
             {/* Header */}
             <div className="flex items-center justify-between gap-2 sm:gap-4 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/30 px-4 sm:px-6 py-4 flex-shrink-0">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
@@ -378,7 +391,9 @@ export const AssetLifecycleInfographic = ({
                     <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Current
                     </p>
-                    <p className="text-base sm:text-lg font-bold text-[#FF4DA6] mt-1">1</p>
+                    <p className="text-base sm:text-lg font-bold text-[#FF4DA6] mt-1">
+                      1
+                    </p>
                   </div>
                   <div>
                     <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">

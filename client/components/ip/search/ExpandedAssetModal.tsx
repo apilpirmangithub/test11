@@ -106,10 +106,19 @@ export const ExpandedAssetModal = ({
         aria-hidden="true"
       />
       <motion.div
-        initial={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
-        animate={isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }}
-        exit={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
-        transition={{ duration: isMobile ? 0.2 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+        initial={
+          isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }
+        }
+        animate={
+          isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }
+        }
+        exit={
+          isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }
+        }
+        transition={{
+          duration: isMobile ? 0.2 : 0.3,
+          ease: [0.22, 1, 0.36, 1],
+        }}
         className="relative z-10 w-full max-w-4xl bg-gradient-to-b from-slate-950/98 to-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
       >
         {/* Header */}
