@@ -200,9 +200,9 @@ export const AssetLifecycleInfographic = ({
                   {/* Parents Section */}
                   {hasParents && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={isMobile ? false : { opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
+                      transition={{ delay: isMobile ? 0 : 0.1 }}
                       className="w-full"
                     >
                       <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
