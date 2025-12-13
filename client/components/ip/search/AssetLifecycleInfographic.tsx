@@ -253,9 +253,9 @@ export const AssetLifecycleInfographic = ({
 
                   {/* Current Asset (Center) */}
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={isMobile ? false : { opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
+                    transition={{ delay: isMobile ? 0 : 0.2 }}
                     className="flex flex-col items-center gap-3"
                   >
                     <div className="relative w-48 h-48 rounded-lg overflow-hidden border-3 border-[#FF4DA6] bg-slate-800 shadow-lg shadow-[#FF4DA6]/20">
