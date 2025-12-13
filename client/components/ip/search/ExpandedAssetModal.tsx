@@ -291,10 +291,10 @@ export const ExpandedAssetModal = ({
         <div className="border-t border-slate-800/40 bg-gradient-to-t from-slate-950/60 to-slate-900/30 backdrop-blur-xl px-4 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6 flex-shrink-0 overflow-y-auto max-h-[40vh]">
           {asset.description && (
             <motion.p
-              initial={{ opacity: 0 }}
+              initial={isMobile ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-sm text-slate-300 leading-relaxed font-light"
+              transition={{ delay: isMobile ? 0 : 0.3 }}
+              className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light"
             >
               {asset.description}
             </motion.p>
