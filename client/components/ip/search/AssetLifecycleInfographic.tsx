@@ -313,7 +313,7 @@ export const AssetLifecycleInfographic = ({
                             transition={{ delay: 0.3 + idx * 0.1 }}
                             className="flex flex-col items-center gap-3"
                           >
-                            <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-emerald-500/50 bg-slate-800">
+                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border-2 border-emerald-500/50 bg-slate-800">
                               {child.mediaUrl ? (
                                 <img
                                   src={child.mediaUrl}
