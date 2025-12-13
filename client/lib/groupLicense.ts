@@ -24,11 +24,19 @@ export function getLicenseSettingsByGroup(
     GROUPS.DIRECT_REGISTER_MANUAL_AI.includes(group)
   ) {
     const licenseType = determineLicenseTypeByGroup(group);
+
+    // Force aiLearning to false for all AI-generated groups
+    // to prevent AI models from being trained on AI-generated content
+    const shouldDisableAiLearning = isAiGeneratedGroup(group);
+    const aiLearningValue = shouldDisableAiLearning
+      ? false
+      : GROUPS.DIRECT_REGISTER_MANUAL_AI.includes(group)
+        ? (aiTrainingManual ?? true)
+        : false;
+
     return getLicenseSettingsByType(
       licenseType,
-      GROUPS.DIRECT_REGISTER_MANUAL_AI.includes(group)
-        ? (aiTrainingManual ?? true)
-        : false,
+      aiLearningValue,
       mintingFee,
       revShare,
     );
