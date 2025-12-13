@@ -379,6 +379,7 @@ export const ExpandedAssetModal = ({
         asset={asset}
         isOpen={showLifecycle}
         onClose={() => setShowLifecycle(false)}
+        isMobile={isMobile}
       />
     </motion.div>
   );
