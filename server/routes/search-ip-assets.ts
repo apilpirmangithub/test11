@@ -616,6 +616,8 @@ export const handleSearchIpAssets: RequestHandler = async (req, res) => {
                     // Flatten parent IP details to root level
                     parentIpIds: parentIpDetails?.parentIpIds,
                     parentIpDetails: parentIpDetails || undefined,
+                    // Child IP IDs (derivatives)
+                    childIpIds: childIpIds.length > 0 ? childIpIds : undefined,
                     licenses: metadata?.licenses || [],
                     licenseTermsIds:
                       parentIpDetails?.licenseTermsIds ||
