@@ -93,24 +93,24 @@ export const ExpandedAssetModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: isMobile ? 0.15 : 0.2 }}
       className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6"
     >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: isMobile ? 0.15 : 0.2 }}
         className="absolute inset-0 bg-slate-900/70 backdrop-blur-md"
         onClick={onClose}
         aria-hidden="true"
       />
       <motion.div
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 w-full max-w-4xl bg-gradient-to-b from-slate-950/98 to-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col max-h-[90vh]"
+        initial={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
+        animate={isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }}
+        exit={isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }}
+        transition={{ duration: isMobile ? 0.2 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 w-full max-w-4xl bg-gradient-to-b from-slate-950/98 to-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
       >
         {/* Header */}
         <div className="flex items-center justify-between gap-4 bg-gradient-to-r from-slate-950/60 to-slate-900/40 backdrop-blur-xl border-b border-slate-800/40 px-6 py-5 flex-shrink-0">
