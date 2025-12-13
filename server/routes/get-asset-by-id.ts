@@ -44,6 +44,51 @@ interface GetAssetByIdResponseBody {
   message?: string;
 }
 
+async function fetchChildIpIds(
+  parentIpId: string,
+  apiKey: string,
+): Promise<string[]> {
+  try {
+    const response = await fetch(
+      "https://api.storyapis.com/api/v4/assets/edges",
+      {
+        method: "POST",
+        headers: {
+          "X-Api-Key": apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          where: {
+            parentIpId: parentIpId,
+          },
+          pagination: {
+            limit: 100,
+            offset: 0,
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.warn(
+        `Failed to fetch child IPs for ${parentIpId}: ${response.status}`,
+      );
+      return [];
+    }
+
+    const data = await response.json();
+    if (!Array.isArray(data.data) || data.data.length === 0) {
+      return [];
+    }
+
+    const edges = data.data;
+    return edges.map((edge: any) => edge.childIpId);
+  } catch (error) {
+    console.warn(`Error fetching child IPs for ${parentIpId}:`, error);
+    return [];
+  }
+}
+
 function convertIpfsUriToHttp(uri: string): string {
   if (!uri) return uri;
 
