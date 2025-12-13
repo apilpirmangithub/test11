@@ -290,9 +290,9 @@ export const AssetLifecycleInfographic = ({
                   {/* Children Section */}
                   {hasChildren && (
                     <motion.div
-                      initial={{ opacity: 0, y: -20 }}
+                      initial={isMobile ? false : { opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.25 }}
+                      transition={{ delay: isMobile ? 0 : 0.25 }}
                       className="w-full"
                     >
                       {/* Arrow down to children */}
