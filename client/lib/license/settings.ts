@@ -139,9 +139,11 @@ export function getLicenseSettingsByType(
   aiTrainingManual?: boolean,
   mintingFee?: number,
   revShare?: number,
+  isAiGenerated?: boolean,
 ): LicenseSettings {
   switch (licenseType) {
     case "non-commercial-social-remixing":
+      // Non-commercial licenses always disable AI learning
       return {
         pilType: "non_commercial_social_remix",
         aiLearning: false,
@@ -149,16 +151,18 @@ export function getLicenseSettingsByType(
         revShare: 0,
       };
     case "commercial-use":
+      // AI-generated content disables AI learning even for commercial use
       return {
         pilType: "commercial_use",
-        aiLearning: aiTrainingManual ?? false,
+        aiLearning: isAiGenerated ? false : (aiTrainingManual ?? false),
         licensePrice: mintingFee ?? 1,
         revShare: 0,
       };
     case "commercial-remix":
+      // AI-generated content disables AI learning even for commercial remix
       return {
         pilType: "commercial_remix",
-        aiLearning: aiTrainingManual ?? true,
+        aiLearning: isAiGenerated ? false : (aiTrainingManual ?? true),
         licensePrice: mintingFee ?? 0,
         revShare: revShare ?? 0,
       };
