@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { formatEther } from "viem";
 import { useRemixTypes } from "./hooks";
@@ -60,8 +60,19 @@ export const ExpandedAssetModal = ({
 }: ExpandedAssetModalProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLifecycle, setShowLifecycle] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
   const getRemixTypes = useRemixTypes();
+
+  // Detect mobile and reduce animations
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Debug logging
   React.useEffect(() => {
@@ -82,27 +93,36 @@ export const ExpandedAssetModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: isMobile ? 0.15 : 0.2 }}
       className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6"
     >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: isMobile ? 0.15 : 0.2 }}
         className="absolute inset-0 bg-slate-900/70 backdrop-blur-md"
         onClick={onClose}
         aria-hidden="true"
       />
       <motion.div
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 w-full max-w-4xl bg-gradient-to-b from-slate-950/98 to-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col max-h-[90vh]"
+        initial={
+          isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }
+        }
+        animate={
+          isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }
+        }
+        exit={
+          isMobile ? { opacity: 0, y: 20 } : { scale: 0.9, opacity: 0, y: 20 }
+        }
+        transition={{
+          duration: isMobile ? 0.2 : 0.3,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="relative z-10 w-full max-w-4xl bg-gradient-to-b from-slate-950/98 to-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-800/60 overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 bg-gradient-to-r from-slate-950/60 to-slate-900/40 backdrop-blur-xl border-b border-slate-800/40 px-6 py-5 flex-shrink-0">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 bg-gradient-to-r from-slate-950/60 to-slate-900/40 backdrop-blur-xl border-b border-slate-800/40 px-4 sm:px-6 py-4 sm:py-5 flex-shrink-0">
           <div className="flex-1 min-w-0 flex items-center gap-3">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-50 line-clamp-2 tracking-tight">
               {asset.title || asset.name || "Untitled Asset"}
@@ -277,13 +297,13 @@ export const ExpandedAssetModal = ({
         </div>
 
         {/* Footer with Details and Actions */}
-        <div className="border-t border-slate-800/40 bg-gradient-to-t from-slate-950/60 to-slate-900/30 backdrop-blur-xl px-6 py-6 sm:py-8 space-y-6 flex-shrink-0">
+        <div className="border-t border-slate-800/40 bg-gradient-to-t from-slate-950/60 to-slate-900/30 backdrop-blur-xl px-4 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6 flex-shrink-0 overflow-y-auto max-h-[40vh]">
           {asset.description && (
             <motion.p
-              initial={{ opacity: 0 }}
+              initial={isMobile ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-sm text-slate-300 leading-relaxed font-light"
+              transition={{ delay: isMobile ? 0 : 0.3 }}
+              className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light"
             >
               {asset.description}
             </motion.p>
@@ -293,9 +313,9 @@ export const ExpandedAssetModal = ({
           {!hideMetadataBadges && (
             <div className="flex flex-wrap gap-2.5">
               <motion.span
-                initial={{ opacity: 0, y: -5 }}
+                initial={isMobile ? false : { opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: isMobile ? 0 : 0.1 }}
                 className={`text-xs px-4 py-2.5 rounded-full font-semibold whitespace-nowrap backdrop-blur-sm border transition-all ${
                   asset.isDerivative
                     ? "bg-blue-500/25 text-blue-200 border-blue-500/40 hover:bg-blue-500/35"
@@ -307,9 +327,9 @@ export const ExpandedAssetModal = ({
 
               {asset.score !== undefined && (
                 <motion.span
-                  initial={{ opacity: 0, y: -5 }}
+                  initial={isMobile ? false : { opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
+                  transition={{ delay: isMobile ? 0 : 0.15 }}
                   className="text-xs px-4 py-2.5 rounded-full bg-[#FF4DA6]/25 text-[#FF4DA6] border border-[#FF4DA6]/40 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-[#FF4DA6]/35 transition-all"
                 >
                   {(asset.score * 100).toFixed(0)}% Match
@@ -318,9 +338,9 @@ export const ExpandedAssetModal = ({
 
               {asset.mediaType && (
                 <motion.span
-                  initial={{ opacity: 0, y: -5 }}
+                  initial={isMobile ? false : { opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: isMobile ? 0 : 0.2 }}
                   className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-semibold whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
                 >
                   {asset.mediaType
@@ -333,9 +353,9 @@ export const ExpandedAssetModal = ({
 
               {asset.ownerAddress && (
                 <motion.span
-                  initial={{ opacity: 0, y: -5 }}
+                  initial={isMobile ? false : { opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
+                  transition={{ delay: isMobile ? 0 : 0.25 }}
                   className="text-xs px-4 py-2.5 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/60 font-mono whitespace-nowrap backdrop-blur-sm hover:bg-slate-800/70 transition-all"
                 >
                   {asset.ownerAddress.slice(0, 8)}...
@@ -368,6 +388,7 @@ export const ExpandedAssetModal = ({
         asset={asset}
         isOpen={showLifecycle}
         onClose={() => setShowLifecycle(false)}
+        isMobile={isMobile}
       />
     </motion.div>
   );

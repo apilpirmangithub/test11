@@ -230,32 +230,51 @@ export const ImagineSearch = ({
     });
     setOwnerDomains(loadingState);
 
-    Promise.all(
-      uniqueOwners.map((owner) => {
-        return fetch("/api/resolve-owner-domain", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ownerAddress: owner }),
-          signal: domainFetchControllerRef.current?.signal,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            return {
-              address: owner,
-              domain: data.ok ? data.domain : null,
-            };
-          })
-          .catch((err) => {
-            if (err.name !== "AbortError") {
-              console.error("Error fetching domain:", err);
-            }
-            return {
-              address: owner,
-              domain: null,
-            };
-          });
-      }),
-    )
+    // Limit concurrent domain requests to 3 to avoid overwhelming mobile networks
+    const MAX_CONCURRENT = 3;
+    const fetchWithLimit = async () => {
+      const results = [];
+
+      for (let i = 0; i < uniqueOwners.length; i += MAX_CONCURRENT) {
+        const batch = uniqueOwners.slice(
+          i,
+          Math.min(i + MAX_CONCURRENT, uniqueOwners.length),
+        );
+
+        const batchResults = await Promise.all(
+          batch.map((owner) => {
+            return fetch("/api/resolve-owner-domain", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ownerAddress: owner }),
+              signal: domainFetchControllerRef.current?.signal,
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                return {
+                  address: owner,
+                  domain: data.ok ? data.domain : null,
+                };
+              })
+              .catch((err) => {
+                if (err.name !== "AbortError") {
+                  console.error("Error fetching domain:", err);
+                }
+                return {
+                  address: owner,
+                  domain: null,
+                };
+              });
+          }),
+        );
+
+        results.push(...batchResults);
+      }
+
+      return results;
+    };
+
+    fetchWithLimit()
       .then((results) => {
         const newDomains: Record<
           string,

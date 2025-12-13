@@ -7,6 +7,7 @@ interface AssetLifecycleInfographicProps {
   asset: SearchResult;
   isOpen: boolean;
   onClose: () => void;
+  isMobile?: boolean;
 }
 
 interface AssetNode {
@@ -20,6 +21,7 @@ export const AssetLifecycleInfographic = ({
   asset,
   isOpen,
   onClose,
+  isMobile = false,
 }: AssetLifecycleInfographicProps) => {
   const [assetGraph, setAssetGraph] = useState<{
     parents: AssetNode[];
@@ -157,20 +159,33 @@ export const AssetLifecycleInfographic = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: isMobile ? 0.15 : 0.2 }}
             className="absolute inset-0 bg-slate-900/70 backdrop-blur-md"
             onClick={onClose}
             aria-hidden="true"
           />
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            initial={
+              isMobile
+                ? { opacity: 0, y: 20 }
+                : { scale: 0.9, opacity: 0, y: 20 }
+            }
+            animate={
+              isMobile ? { opacity: 1, y: 0 } : { scale: 1, opacity: 1, y: 0 }
+            }
+            exit={
+              isMobile
+                ? { opacity: 0, y: 20 }
+                : { scale: 0.9, opacity: 0, y: 20 }
+            }
+            transition={{
+              duration: isMobile ? 0.2 : 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-slate-950/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800/50 overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between gap-4 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/30 px-6 py-4 flex-shrink-0">
+            <div className="flex items-center justify-between gap-2 sm:gap-4 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/30 px-4 sm:px-6 py-4 flex-shrink-0">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
                 Asset Lifecycle
               </h2>
@@ -185,7 +200,7 @@ export const AssetLifecycleInfographic = ({
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="flex flex-col items-center gap-4">
@@ -194,19 +209,19 @@ export const AssetLifecycleInfographic = ({
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-12">
+                <div className="flex flex-col items-center gap-6 sm:gap-12">
                   {/* Parents Section */}
                   {hasParents && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={isMobile ? false : { opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
+                      transition={{ delay: isMobile ? 0 : 0.1 }}
                       className="w-full"
                     >
-                      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
+                      <h3 className="text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
                         Parent Asset{parents.length > 1 ? "s" : ""}
                       </h3>
-                      <div className="flex flex-wrap justify-center gap-6">
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
                         {parents.map((parent, idx) => (
                           <motion.div
                             key={`parent-${idx}`}
@@ -215,7 +230,7 @@ export const AssetLifecycleInfographic = ({
                             transition={{ delay: 0.15 + idx * 0.1 }}
                             className="flex flex-col items-center gap-3"
                           >
-                            <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-blue-500/50 bg-slate-800">
+                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border-2 border-blue-500/50 bg-slate-800">
                               {parent.mediaUrl ? (
                                 <img
                                   src={parent.mediaUrl}
@@ -251,12 +266,12 @@ export const AssetLifecycleInfographic = ({
 
                   {/* Current Asset (Center) */}
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={isMobile ? false : { opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
+                    transition={{ delay: isMobile ? 0 : 0.2 }}
                     className="flex flex-col items-center gap-3"
                   >
-                    <div className="relative w-48 h-48 rounded-lg overflow-hidden border-3 border-[#FF4DA6] bg-slate-800 shadow-lg shadow-[#FF4DA6]/20">
+                    <div className="relative w-32 h-32 sm:w-48 sm:h-48 rounded-lg overflow-hidden border-3 border-[#FF4DA6] bg-slate-800 shadow-lg shadow-[#FF4DA6]/20">
                       {current.mediaUrl ? (
                         <img
                           src={current.mediaUrl}
@@ -288,9 +303,9 @@ export const AssetLifecycleInfographic = ({
                   {/* Children Section */}
                   {hasChildren && (
                     <motion.div
-                      initial={{ opacity: 0, y: -20 }}
+                      initial={isMobile ? false : { opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.25 }}
+                      transition={{ delay: isMobile ? 0 : 0.25 }}
                       className="w-full"
                     >
                       {/* Arrow down to children */}
@@ -298,11 +313,11 @@ export const AssetLifecycleInfographic = ({
                         <div className="w-1 h-8 bg-gradient-to-b from-transparent to-emerald-500" />
                       </div>
 
-                      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
+                      <h3 className="text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
                         Derivative{children.length > 1 ? "s" : ""} (Child Asset
                         {children.length > 1 ? "s" : ""})
                       </h3>
-                      <div className="flex flex-wrap justify-center gap-6">
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
                         {children.map((child, idx) => (
                           <motion.div
                             key={`child-${idx}`}
@@ -311,7 +326,7 @@ export const AssetLifecycleInfographic = ({
                             transition={{ delay: 0.3 + idx * 0.1 }}
                             className="flex flex-col items-center gap-3"
                           >
-                            <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-emerald-500/50 bg-slate-800">
+                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border-2 border-emerald-500/50 bg-slate-800">
                               {child.mediaUrl ? (
                                 <img
                                   src={child.mediaUrl}
@@ -362,27 +377,29 @@ export const AssetLifecycleInfographic = ({
 
             {/* Footer Info */}
             {assetGraph && (
-              <div className="border-t border-slate-800/30 bg-slate-950/95 backdrop-blur-xl px-6 py-4 flex-shrink-0">
-                <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="border-t border-slate-800/30 bg-slate-950/95 backdrop-blur-xl px-4 sm:px-6 py-4 flex-shrink-0">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Parents
                     </p>
-                    <p className="text-lg font-bold text-slate-100 mt-1">
+                    <p className="text-base sm:text-lg font-bold text-slate-100 mt-1">
                       {parents.length}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Current
                     </p>
-                    <p className="text-lg font-bold text-[#FF4DA6] mt-1">1</p>
+                    <p className="text-base sm:text-lg font-bold text-[#FF4DA6] mt-1">
+                      1
+                    </p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 uppercase tracking-wide">
+                    <p className="text-[0.65rem] sm:text-xs text-slate-400 uppercase tracking-wide">
                       Derivatives
                     </p>
-                    <p className="text-lg font-bold text-slate-100 mt-1">
+                    <p className="text-base sm:text-lg font-bold text-slate-100 mt-1">
                       {children.length}
                     </p>
                   </div>
