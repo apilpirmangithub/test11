@@ -300,11 +300,11 @@ export const AssetLifecycleInfographic = ({
                         <div className="w-1 h-8 bg-gradient-to-b from-transparent to-emerald-500" />
                       </div>
 
-                      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
+                      <h3 className="text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-wide mb-4 text-center">
                         Derivative{children.length > 1 ? "s" : ""} (Child Asset
                         {children.length > 1 ? "s" : ""})
                       </h3>
-                      <div className="flex flex-wrap justify-center gap-6">
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
                         {children.map((child, idx) => (
                           <motion.div
                             key={`child-${idx}`}
